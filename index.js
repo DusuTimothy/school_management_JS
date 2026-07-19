@@ -31,4 +31,20 @@ class Staffs extends SchoolManagementSystem {
     this.grades = grades;
   }
 }
+class Student extends SchoolManagementSystem {
+  constructor(fullName, id, password, email, classAssigned) {
+    super(fullName, id, password, classAssigned);
+    this.email = email;
+  }
 
+  static studentLogin(email, password) {
+    const foundStudent = StudentList.find(stud => stud.email === email);
+    if (!foundStudent || !foundStudent.verifyPassword(password)) {
+      console.log(`Invalid details please Sign-Up`);
+      return;
+    }
+    console.log(`Welcome To Dashboard! Login successful`);
+    console.log(foundStudent);
+  }
+
+  
