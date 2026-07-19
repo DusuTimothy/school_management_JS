@@ -37,16 +37,6 @@ class Student extends SchoolManagementSystem {
     this.email = email;
   }
 
-  static studentLogin(email, password) {
-    const foundStudent = StudentList.find(stud => stud.email === email);
-    if (!foundStudent || !foundStudent.verifyPassword(password)) {
-      console.log(`Invalid details please Sign-Up`);
-      return;
-    }
-    console.log(`Welcome To Dashboard! Login successful`);
-    console.log(foundStudent);
-  }
-
   static studentSignUp(fullName, id, password, email, classAssigned) {
     const exist = StudentList.some(stud => stud.email === email);
     if (exist) {
@@ -56,6 +46,28 @@ class Student extends SchoolManagementSystem {
     const newStudent = new Student(fullName, id, password, email, classAssigned);
     StudentList.push(newStudent);
     console.log(`SignUp successful for ${fullName}!`);
+  }
+
+  static studentLogin(email, password) {
+    const foundStudent = StudentList.find(stud => stud.email === email);
+    if (!foundStudent || !foundStudent.verifyPassword(password)) {
+      console.log(`Invalid details please Sign-Up`);
+      return;
+    }
+    currentUser = foundStudent
+    console.log(`Welcome To Dashboard! Login successful`);
+    console.log(foundStudent);
+  }
+
+  static studentLogOut() {
+    if (!currentUser) {
+      console.log(`No Student is logged in`);
+      return;
+    }
+    console.log(`${currentUser.fullName} is logged out successfully`);
+    currentUser = null;
+
+
   }
 
   static toAccessGrades(id, classAssigned) {
@@ -75,6 +87,17 @@ class Student extends SchoolManagementSystem {
     console.log(`Fetching ${id} from ${classAssigned} grades`);
     console.log(`${id} grades are ${JSON.stringify(searchStaff.grades, null, 2)}!`)
   }
+
+  static editDetailsById(id, newName, newPassword) {
+    const foundById = StudentList.find(stud => stud.id === id);
+    if (!foundById) {
+      console.log(`Student not found`);
+      return;
+    }
+    foundById.editDetails(id, newName, newPassword)
+  }
+
+
 }
 
 // <<<<<<<<<<STAFF INPUT>>>>>>>>>>>>>>
@@ -92,9 +115,13 @@ const StaffList = [];
 const StudentList = [];
 StaffList.push(staff1, staff2, staff3);
 StudentList.push(student1, student2, student3);
+// LOGIN AND LOGOUT Validator
+let currentUser = null;
 
 // // Test 
-// Student.studentLogin("amos@gmail.com", 1020);
+Student.studentLogin("amos@gmail.com", 1020);
 // Student.studentSignUp("Lois Samson", "BFL004", 5678, "Lois@gmail.com", "Devcon");
-Student.toAccessGrades("BFL001", "Vitalik");
-
+// Student.toAccessGrades("BFL001", "Vitalik");
+// Student.editDetailsById("BFL001", "Jason Aisha", 9876)
+// Student.studentLogin("timo@gmail.com", 9876);
+Student.studentLogOut()
