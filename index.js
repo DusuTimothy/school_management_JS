@@ -30,6 +30,17 @@ class Staffs extends SchoolManagementSystem {
     super(fullName, id, password, classAssigned);
     this.grades = grades;
   }
+
+  static editGrades(id, classAssigned, newGrade) {
+    const foundStaff = StaffList.find(staf => staf.id === id)
+    if (!foundStaff || foundStaff.classAssigned !== classAssigned){
+      console.log(`Access Denied! Invalid Staff ID or not Assigned staff`);
+      return;
+    }
+    foundStaff.grades = newGrade;
+    console.log(newGrade, " Successfully Updated");
+    
+  }
 }
 class Student extends SchoolManagementSystem {
   constructor(fullName, id, password, email, classAssigned) {
